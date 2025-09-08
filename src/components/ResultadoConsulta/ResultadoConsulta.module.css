@@ -1,0 +1,246 @@
+.containerResultado {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.carregando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  color: #64748b;
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.botaoVoltar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  color: #475569;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.botaoVoltar:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.iconeVoltar {
+  width: 1rem;
+  height: 1rem;
+}
+
+.cardResultado {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  overflow: hidden;
+}
+
+.cabecalhoModelo {
+  padding: 2rem;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.infoModelo {
+  flex: 1;
+}
+
+.nomeModelo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.2;
+}
+
+.detalhesModelo {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.detalhe {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.imagemModelo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.especificacoes, .precos {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.precos {
+  border-bottom: none;
+}
+
+.tituloSecao {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+}
+
+.gridEspecificacoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.especificacao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.labelEspec {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tabelaPrecos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.linhaPreco {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  border-left: 4px solid transparent;
+}
+
+.linhaPreco:first-child {
+  border-left-color: #16a34a;
+}
+
+.linhaPreco:last-child {
+  border-left-color: #ea580c;
+}
+
+.tipoPreco {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.iconePreco {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #64748b;
+}
+
+.valorPreco {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.precoNovo {
+  color: #16a34a;
+}
+
+.precoUsado {
+  color: #ea580c;
+}
+
+.rodape {
+  padding: 1.5rem 2rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.infoAtualizacao, .infoFontes {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.infoAtualizacao {
+  margin-bottom: 0.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .containerResultado {
+    padding: 0.5rem;
+  }
+  
+  .cabecalhoModelo {
+    padding: 1.5rem;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .nomeModelo {
+    font-size: 1.25rem;
+  }
+  
+  .especificacoes, .precos {
+    padding: 1rem 1.5rem;
+  }
+  
+  .gridEspecificacoes {
+    grid-template-columns: 1fr;
+  }
+  
+  .linhaPreco {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .rodape {
+    padding: 1rem 1.5rem;
+  }
+}

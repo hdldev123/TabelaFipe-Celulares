@@ -1,0 +1,51 @@
+.containerTabela {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.titulo {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+}
+
+.descricao {
+  color: #64748b;
+  text-align: center;
+  margin: 0 0 2rem 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .containerTabela {
+    padding: 1rem 0;
+  }
+  
+  .card {
+    margin: 0 1rem;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+  
+  .titulo {
+    font-size: 1.5rem;
+  }
+  
+  .descricao {
+    font-size: 0.875rem;
+  }
+}

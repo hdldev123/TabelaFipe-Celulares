@@ -1,0 +1,25 @@
+.seletorCascata {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.etapa {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  .seletorCascata {
+    gap: 1.25rem;
+  }
+}
