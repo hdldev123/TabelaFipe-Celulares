@@ -95,4 +95,16 @@ router.get('/precos/:idModelo', async (req, res) => {
   }
 });
 
+// GET /api/debug/celulares - Lista todos os celulares (apenas para teste)
+router.get('/debug/celulares', async (req, res) => {
+  try {
+    const celulares = await Celular.find().limit(20);
+    res.json(celulares);
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao buscar celulares', detalhes: error.message });
+  }
+});
+
+
+
 export default router;
