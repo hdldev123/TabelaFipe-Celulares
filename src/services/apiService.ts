@@ -1,11 +1,24 @@
 import axios from 'axios';
 import { ModeloCelular, ResultadoPrecos } from '../types/tipos';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+// Configuração da URL da API baseada no ambiente
+const getApiBaseUrl = (): string => {
+  // Em produção, usa a variável de ambiente ou URL padrão
+  if (import.meta.env.PROD) {
+    return import.meta.env.VITE_API_URL || 'https://tabela-fipe-celulares-api.onrender.com/api';
+  }
+  // Em desenvolvimento, usa localhost
+  return import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
+  timeout: 15000, // Aumentado para produção
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 export const buscarAnos = async (): Promise<number[]> => {

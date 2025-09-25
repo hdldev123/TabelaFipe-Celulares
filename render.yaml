@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: tabela-fipe-celulares-api
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd servidor && npm install
+    startCommand: cd servidor && npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: mongodb-atlas
+          property: connectionString
+      - key: FRONTEND_URL
+        value: https://tabela-fipe-celulares.vercel.app
