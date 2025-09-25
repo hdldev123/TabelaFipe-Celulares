@@ -9,7 +9,7 @@ import { executarScrapingCompleto } from './servicos/coordenadorScraping.js';
 dotenv.config();
 
 const app = express();
-const PORTA = process.env.PORTA_SERVIDOR || 5000;
+const PORTA = process.env.PORTA_SERVIDOR || 5001;
 
 // Middlewares
 app.use(cors());
