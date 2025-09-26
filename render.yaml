@@ -4,8 +4,9 @@ services:
     env: node
     region: oregon
     plan: free
-    buildCommand: cd servidor && npm install
-    startCommand: cd servidor && npm start
+    rootDir: servidor
+    buildCommand: npm install
+    startCommand: npm start
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
@@ -13,8 +14,8 @@ services:
       - key: PORT
         value: 10000
       - key: MONGODB_URI
-        fromDatabase:
-          name: mongodb-atlas
-          property: connectionString
+        value: mongodb+srv://fipe_admin:admin123@fipe-teste.wtgaly0.mongodb.net/?retryWrites=true&w=majority&appName=fipe-teste
       - key: FRONTEND_URL
         value: https://tabela-fipe-celulares.vercel.app
+      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+        value: true
