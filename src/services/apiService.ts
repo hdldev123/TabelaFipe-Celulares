@@ -3,12 +3,12 @@ import { ModeloCelular, ResultadoPrecos } from '../types/tipos';
 
 // Configuração da URL da API baseada no ambiente
 const getApiBaseUrl = (): string => {
-  // Em produção, usa a variável de ambiente ou URL padrão
-  if (import.meta.env.PROD) {
-    return import.meta.env.VITE_API_URL || 'https://tabela-fipe-celulares-api.onrender.com/api';
+  // Em desenvolvimento, usa localhost (servidor Express)
+  if (import.meta.env.DEV) {
+    return import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
   }
-  // Em desenvolvimento, usa localhost
-  return import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+  // Em produção, usa Netlify Functions
+  return import.meta.env.VITE_API_URL || '/.netlify/functions/api/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
