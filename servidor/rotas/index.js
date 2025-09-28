@@ -79,13 +79,29 @@ router.get('/precos/:idModelo', async (req, res) => {
         especificacoes: celular.especificacoes
       },
       precos: {
-        novo: celular.precoMedianoNovo || null,
-        usado: celular.precoMedianoUsado || null
+        novo: {
+          mediana: celular.precoMedianoNovo || null,
+          estatisticas: celular.estatisticasNovos || null
+        },
+        usado: {
+          mediana: celular.precoMedianoUsado || null,
+          estatisticas: celular.estatisticasUsados || null
+        }
       },
       estatisticas: {
-        totalAnunciosNovos: celular.precosNovos.length,
-        totalAnunciosUsados: celular.precosUsados.length,
-        ultimaAtualizacao: celular.ultimaAtualizacao
+        totalAnunciosNovos: celular.totalAnunciosNovos || celular.precosNovos.length,
+        totalAnunciosUsados: celular.totalAnunciosUsados || celular.precosUsados.length,
+        ultimaAtualizacao: celular.ultimaAtualizacao,
+        // Mostra informação sobre amostra ampliada para usados
+        amostrasAmpliadas: {
+          novos: celular.totalAnunciosNovos > 20,
+          usados: celular.totalAnunciosUsados > 20
+        }
+      },
+      // Lista das lojas que tiveram preços coletados
+      fontes: {
+        novos: [...new Set(celular.precosNovos.map(p => p.fonte))],
+        usados: [...new Set(celular.precosUsados.map(p => p.fonte))]
       }
     };
 

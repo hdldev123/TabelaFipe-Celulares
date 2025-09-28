@@ -56,47 +56,76 @@ class CoordenadorScraping {
     
     const termoBusca = `${modelo.marca} ${modelo.modelo} ${modelo.variacao.armazenamento || ''}`.trim();
     
-    // Coleta preços novos
-    const precosNovos = await this.coletarPrecos(this.scrapers.novos, termoBusca);
+    // Coleta preços novos (quantidade padrão)
+    console.log(`  📱 Coletando preços NOVOS...`);
+    const precosNovos = await this.coletarPrecos(this.scrapers.novos, termoBusca, { tipo: 'novo' });
     
-    // Coleta preços usados
-    const precosUsados = await this.coletarPrecos(this.scrapers.usados, termoBusca);
+    // Coleta preços usados (quantidade maior para mais precisão)
+    console.log(`  📱 Coletando preços USADOS (amostra ampliada)...`);
+    const precosUsados = await this.coletarPrecos(this.scrapers.usados, termoBusca, { tipo: 'usado' });
     
-    // Filtra e calcula medianas
+    // Filtra e calcula estatísticas avançadas
     const precosNovosValidos = filtrarPrecosValidos(precosNovos);
     const precosUsadosValidos = filtrarPrecosValidos(precosUsados);
     
-    const medianaNovas = calcularMediana(precosNovosValidos.map(p => p.valor));
-    const medianaUsadas = calcularMediana(precosUsadosValidos.map(p => p.valor));
+    const statsNovos = this.calcularEstatisticas(precosNovosValidos.map(p => p.valor));
+    const statsUsados = this.calcularEstatisticas(precosUsadosValidos.map(p => p.valor));
     
-    // Atualiza modelo no banco
+    // Atualiza modelo no banco com mais informações
     await Celular.findByIdAndUpdate(modelo._id, {
       precosNovos: precosNovosValidos,
       precosUsados: precosUsadosValidos,
-      precoMedianoNovo: medianaNovas,
-      precoMedianoUsado: medianaUsadas,
+      precoMedianoNovo: statsNovos.mediana,
+      precoMedianoUsado: statsUsados.mediana,
+      estatisticasNovos: statsNovos,
+      estatisticasUsados: statsUsados,
+      totalAnunciosNovos: precosNovosValidos.length,
+      totalAnunciosUsados: precosUsadosValidos.length,
       ultimaAtualizacao: new Date()
     });
     
-    console.log(`✅ ${modelo.marca} ${modelo.modelo} atualizado - Novo: R$ ${medianaNovas || 'N/A'} | Usado: R$ ${medianaUsadas || 'N/A'}`);
+    console.log(`✅ ${modelo.marca} ${modelo.modelo} atualizado:`);
+    console.log(`   📊 Novos: ${precosNovosValidos.length} anúncios - Mediana: R$ ${statsNovos.mediana || 'N/A'}`);
+    console.log(`   📊 Usados: ${precosUsadosValidos.length} anúncios - Mediana: R$ ${statsUsados.mediana || 'N/A'}`);
   }
 
-  async coletarPrecos(scrapers, termoBusca) {
+  calcularEstatisticas(precos) {
+    if (!precos.length) return { mediana: null, media: null, min: null, max: null };
+    
+    const precosOrdenados = precos.sort((a, b) => a - b);
+    const mediana = calcularMediana(precos);
+    const media = precos.reduce((sum, p) => sum + p, 0) / precos.length;
+    const min = Math.min(...precos);
+    const max = Math.max(...precos);
+    
+    return {
+      mediana: Math.round(mediana),
+      media: Math.round(media),
+      min,
+      max,
+      total: precos.length
+    };
+  }
+
+  async coletarPrecos(scrapers, termoBusca, opcoes = {}) {
     const todosPrecos = [];
     
     for (const scraper of scrapers) {
       try {
         console.log(`  📡 Executando ${scraper.constructor.name}...`);
-        const precos = await scraper.buscarPrecos(termoBusca);
+        const precos = await scraper.buscarPrecos(termoBusca, opcoes);
         todosPrecos.push(...precos);
         
+        console.log(`     💰 ${precos.length} preços coletados de ${scraper.nome}`);
+        
         // Pausa entre scrapers
-        await this.aguardar(1000);
+        await this.aguardar(1500);
       } catch (error) {
         console.error(`  ❌ Erro no ${scraper.constructor.name}:`, error.message);
       }
     }
     
+    console.log(`  📊 Total coletado: ${todosPrecos.length} preços`);
     return todosPrecos;
   }
 

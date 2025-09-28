@@ -51,6 +51,22 @@ const celularSchema = new mongoose.Schema({
   precosUsados: [precoSchema],
   precoMedianoNovo: Number,
   precoMedianoUsado: Number,
+  estatisticasNovos: {
+    mediana: Number,
+    media: Number,
+    min: Number,
+    max: Number,
+    total: Number
+  },
+  estatisticasUsados: {
+    mediana: Number,
+    media: Number,
+    min: Number,
+    max: Number,
+    total: Number
+  },
+  totalAnunciosNovos: { type: Number, default: 0 },
+  totalAnunciosUsados: { type: Number, default: 0 },
   ultimaAtualizacao: {
     type: Date,
     default: Date.now
