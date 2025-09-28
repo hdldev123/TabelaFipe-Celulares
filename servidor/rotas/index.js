@@ -70,38 +70,37 @@ router.get('/precos/:idModelo', async (req, res) => {
       return res.status(404).json({ erro: 'Modelo não encontrado' });
     }
 
+    // Função para calcular mediana
+    const calcularMediana = (precos) => {
+      if (!precos || precos.length === 0) return null;
+      const valores = precos.map(p => p.preco).filter(p => p && !isNaN(p)).sort((a, b) => a - b);
+      if (valores.length === 0) return null;
+      const meio = Math.floor(valores.length / 2);
+      return valores.length % 2 === 0 
+        ? (valores[meio - 1] + valores[meio]) / 2
+        : valores[meio];
+    };
+
+    // Usar os preços já calculados do banco ou calcular se necessário
+    const precoMedianoNovo = celular.precoMedianoNovo || calcularMediana(celular.precosNovos || []);
+    const precoMedianoUsado = celular.precoMedianoUsado || calcularMediana(celular.precosUsados || []);
+
     const resultado = {
       modelo: {
-        nome: `${celular.modelo} ${celular.variacao.armazenamento || ''} - ${celular.variacao.cor || ''}`.trim(),
+        nome: `${celular.modelo} ${celular.variacao?.armazenamento || ''} - ${celular.variacao?.cor || ''}`.trim(),
         marca: celular.marca,
         anoLancamento: celular.anoLancamento,
         imagem: celular.imagemUrl,
         especificacoes: celular.especificacoes
       },
       precos: {
-        novo: {
-          mediana: celular.precoMedianoNovo || null,
-          estatisticas: celular.estatisticasNovos || null
-        },
-        usado: {
-          mediana: celular.precoMedianoUsado || null,
-          estatisticas: celular.estatisticasUsados || null
-        }
+        novo: precoMedianoNovo,
+        usado: precoMedianoUsado
       },
       estatisticas: {
-        totalAnunciosNovos: celular.totalAnunciosNovos || celular.precosNovos.length,
-        totalAnunciosUsados: celular.totalAnunciosUsados || celular.precosUsados.length,
-        ultimaAtualizacao: celular.ultimaAtualizacao,
-        // Mostra informação sobre amostra ampliada para usados
-        amostrasAmpliadas: {
-          novos: celular.totalAnunciosNovos > 20,
-          usados: celular.totalAnunciosUsados > 20
-        }
-      },
-      // Lista das lojas que tiveram preços coletados
-      fontes: {
-        novos: [...new Set(celular.precosNovos.map(p => p.fonte))],
-        usados: [...new Set(celular.precosUsados.map(p => p.fonte))]
+        totalAnunciosNovos: celular.totalAnunciosNovos || (celular.precosNovos ? celular.precosNovos.length : 0),
+        totalAnunciosUsados: celular.totalAnunciosUsados || (celular.precosUsados ? celular.precosUsados.length : 0),
+        ultimaAtualizacao: celular.ultimaAtualizacao
       }
     };
 
@@ -118,6 +117,25 @@ router.get('/debug/celulares', async (req, res) => {
     res.json(celulares);
   } catch (error) {
     res.status(500).json({ erro: 'Erro ao buscar celulares', detalhes: error.message });
+  }
+});
+
+// GET /api/debug/celular/:id - Debug de celular específico
+router.get('/debug/celular/:id', async (req, res) => {
+  try {
+    const celular = await Celular.findById(req.params.id);
+    res.json({
+      id: celular._id,
+      modelo: celular.modelo,
+      marca: celular.marca,
+      precos: celular.precos,
+      precosNovos: celular.precosNovos,
+      precosUsados: celular.precosUsados,
+      precoMedianoNovo: celular.precoMedianoNovo,
+      precoMedianoUsado: celular.precoMedianoUsado
+    });
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao buscar celular', detalhes: error.message });
   }
 });
 

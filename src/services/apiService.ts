@@ -5,7 +5,7 @@ import { ModeloCelular, ResultadoPrecos } from '../types/tipos';
 const getApiBaseUrl = (): string => {
   // Em desenvolvimento, usa localhost (servidor Express)
   if (import.meta.env.DEV) {
-    return import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+    return import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
   }
   // Em produção, usa Netlify Functions
   return import.meta.env.VITE_API_URL || '/.netlify/functions/api/api';

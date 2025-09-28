@@ -7,7 +7,7 @@ import Celular from '../modelos/celularModel.js';
 // Configuração do dotenv para acessar o arquivo .env corretamente
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 // Dados de exemplo para popular o banco
 const dadosTeste = [
