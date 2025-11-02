@@ -3,10 +3,15 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cron from 'node-cron';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import rotasApi from './rotas/index.js';
 import { executarScrapingCompleto } from './servicos/coordenadorScraping.js';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+dotenv.config({ path: join(__dirname, '.env') });
 
 const app = express();
 const PORTA = process.env.PORT || process.env.PORTA_SERVIDOR || 5001;
