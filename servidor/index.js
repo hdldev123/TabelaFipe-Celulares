@@ -15,7 +15,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 // Configuração do CORS baseada no ambiente
 const corsOptions = {
   origin: NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL, 'https://tabela-fipe-celulares.vercel.app', 'https://tabela-fipe-celulares.netlify.app']
+    ? process.env.FRONTEND_URL
     : ['http://localhost:5173', 'http://127.0.0.1:5173'],
   credentials: true,
   optionsSuccessStatus: 200
@@ -25,7 +25,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Rota de health check para serviços de hospedagem
+// Rota de health check
 app.get('/', (req, res) => {
   res.json({ 
     message: 'API TabelaFipe-Celulares funcionando!', 
